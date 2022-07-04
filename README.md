@@ -1,5 +1,11 @@
 # editabletuple
 
+- [Overview](#overview)
+- [Examples](#examples)
+- [API](#api)
+
+## Overview
+
 This module provides the `editabletuple()` and `editableobject()` functions.
 
 The `editabletuple()` function is used tor creating classes with a fixed
@@ -28,7 +34,9 @@ To install just use `python3 -m pip install editabletuple`.
 Or just copy the `editabletuple.py` file which is self-contained and depends
 only on the standard library.
 
-## Example #1: no defaults; no validator
+## Examples
+
+### Example #1: no defaults; no validator
 
     >>> Options = editabletuple('Options', 'maxcolors shape zoom restore')
     >>> options = Options(5, 'square', 0.9, True)
@@ -40,7 +48,7 @@ only on the standard library.
     >>> options
     Options(maxcolors=7, shape='square', zoom=0.8, restore=False)
 
-## Example #2: with defaults but no validator
+### Example #2: with defaults but no validator
 
     >>> Rgb = editabletuple('Rgb', 'red green blue', defaults=(0, 0, 0))
     >>> black = Rgb()
@@ -53,7 +61,7 @@ only on the standard library.
     >>> violet
     Rgb(red=238, green=130, blue=238)
 
-## Example #3: with defaults and a validator
+### Example #3: with defaults and a validator
 
 If you provide a validator function, it will be called whenever an attempt
 is made to set a value, whether at construction time or later by `et[i] =
@@ -104,5 +112,33 @@ raise a `ValueError`.
 
 These examples—and several others—are in the module's function's
 docstrings.
+
+### API
+
+**def editabletuple(classname, *fieldnames, defaults=None, validator=None,
+                    doc=None):**
+
+Creates a new class called `classname` with the given `fieldnames`, optional
+``defaults``, optional ``validator``, and optional ``doc`` docstring.
+
+Instances of the class behave almost exactly like
+``collections.namedtuple``'s except that fields may be set as well as get
+using their index position or fieldname. They support `len()`, `in`, the
+comparison operators, and are iterable—which means they can be converted to
+a `list` or `tuple` by passing to either's eponymous factory function. They
+also provide an `.asdict` property.
+
+**def editableobject(classname, *fieldnames, defaults=None, validator=None,
+                     doc=None):**
+
+Creates a new class called `classname` with the given `fieldnames`, optional
+``defaults``, optional ``validator``, and optional ``doc`` docstring.
+
+Instances of the class have fields which can get and set by fieldname. They
+support the comparison operators and `.astuple` and `.asdict` properties,
+the former returning a `tuple` of the instance's values, the latter a `dict`
+of fielname-value  items..
+
+-----
 
 **License: GPLv3**
