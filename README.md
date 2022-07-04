@@ -115,8 +115,8 @@ docstrings.
 
 ### API
 
-**def editabletuple(classname, *fieldnames, defaults=None, validator=None,
-                    doc=None):**
+**`def editabletuple(classname, *fieldnames, defaults=None, validator=None,
+                    doc=None):`**
 
 Creates a new class called `classname` with the given `fieldnames`, optional
 ``defaults``, optional ``validator``, and optional ``doc`` docstring.
@@ -128,8 +128,8 @@ comparison operators, and are iterable—which means they can be converted to
 a `list` or `tuple` by passing to either's eponymous factory function. They
 also provide an `.asdict` property.
 
-**def editableobject(classname, *fieldnames, defaults=None, validator=None,
-                     doc=None):**
+**`def editableobject(classname, *fieldnames, defaults=None, validator=None,
+                     doc=None):`**
 
 Creates a new class called `classname` with the given `fieldnames`, optional
 ``defaults``, optional ``validator``, and optional ``doc`` docstring.
