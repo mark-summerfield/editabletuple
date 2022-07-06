@@ -139,6 +139,6 @@ support the comparison operators and `.astuple` and `.asdict` properties,
 the former returning a `tuple` of the instance's values, the latter a `dict`
 of fielname-value  items..
 
------
+---
 
 **License: GPLv3**

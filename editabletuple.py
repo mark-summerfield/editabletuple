@@ -21,7 +21,7 @@ and editableobject APIs.
 
 import functools
 
-__version__ = '1.4.3'
+__version__ = '1.4.4'
 
 
 def editabletuple(classname, *fieldnames, defaults=None, validator=None,
@@ -390,28 +390,17 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
     ...         if value is None or value == 0 or 40 <= value <= 240:
     ...             return value
     ...         return 96
-    ...     if name == 'max_list_in_line':
-    ...         if 1 <= value <= 120:
-    ...             return value
-    ...         return 10
-    ...     if name == 'max_fields_in_line':
-    ...         if 1 <= value <= 120:
-    ...             return value
-    ...         return 5
     ...     if name == 'max_short_len':
     ...         if 24 <= value <= 60:
     ...             return value
     ...         return 32
     >>>
     >>> Format = editableobject(
-    ...     'Format', 'indent', 'wrap_width', 'max_list_in_line',
-    ...     'max_fields_in_line', 'max_short_len',
+    ...     'Format', 'indent', 'wrap_width', 'max_short_len',
     ...     defaults=('  ', 96, 10, 5, 32),
     ...     validator=_validate_format)
     >>> fmt = Format() # default
     >>> fmt.indent == '  ' and fmt.wrap_width == 96
-    True
-    >>> fmt.max_list_in_line == 10 and fmt.max_fields_in_line == 5
     True
     >>> fmt.max_short_len == 32
     True
@@ -441,8 +430,6 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
     <BLANKLINE>
     field: indent (default='  ')
     field: wrap_width (default=96)
-    field: max_list_in_line (default=10)
-    field: max_fields_in_line (default=5)
     field: max_short_len (default=32)
 
     Example #4: with defaults and a validator — and some API examples
