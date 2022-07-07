@@ -21,7 +21,7 @@ and editableobject APIs.
 
 import functools
 
-__version__ = '1.4.5'
+__version__ = '1.5.0'
 
 
 def editabletuple(classname, *fieldnames, defaults=None, validator=None,
@@ -222,7 +222,17 @@ def editabletuple(classname, *fieldnames, defaults=None, validator=None,
         ...
     IndexError: list index out of range
 
-    Example #5: subclassing
+    Example #5: update
+
+    >>> Point3D = editabletuple('Point3D', 'x', 'y', 'z')
+    >>> p = Point3D(2, 3, 5)
+    >>> p
+    Point3D(x=2, y=3, z=5)
+    >>> p.update(z=-7, y=11)
+    >>> p
+    Point3D(x=2, y=11, z=-7)
+
+    Example #6: subclassing
 
     >>> import math
     >>> class Point(editabletuple('Point', 'x y')):
@@ -252,6 +262,10 @@ def editabletuple(classname, *fieldnames, defaults=None, validator=None,
     >>> p.distance_to(Point(8, 12))
     3.0
     '''
+    def update(self, **kwargs):
+        for name, value in kwargs.items():
+            self._update(name, value)
+
     def __getitem__(self, index):
         fields = self.__class__.__slots__
         if isinstance(index, slice):
@@ -269,11 +283,6 @@ def editabletuple(classname, *fieldnames, defaults=None, validator=None,
 
     def __setattr__(self, name, value):
         self._update(name, value)
-
-    def _update(self, name, value):
-        if self._validator is not None:
-            value = self._validator(name, value)
-        object.__setattr__(self, name, value)
 
     def __len__(self):
         return len(self.__class__.__slots__)
@@ -304,7 +313,7 @@ def editabletuple(classname, *fieldnames, defaults=None, validator=None,
     doc = _doc(classname, fieldnames, defaults) if doc is None else doc
     attributes = dict(
         __init__=__init__, asdict=property(asdict), __repr__=__repr__,
-        __getitem__=__getitem__, __setitem__=__setitem__,
+        update=update, __getitem__=__getitem__, __setitem__=__setitem__,
         __delattr__=__delattr__, __setattr__=__setattr__,
         __contains__=__contains__, _defaults=defaults,
         _validator=staticmethod(validator), _update=_update,
@@ -547,7 +556,17 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
         ...
     TypeError: 'Point' object does not support item assignment
 
-    Example #6: subclassing
+    Example #6: update
+
+    >>> Point3D = editableobject('Point3D', 'x', 'y', 'z')
+    >>> p = Point3D(2, 3, 5)
+    >>> p
+    Point3D(x=2, y=3, z=5)
+    >>> p.update(z=-7, y=11)
+    >>> p
+    Point3D(x=2, y=11, z=-7)
+
+    Example #7: subclassing
 
     >>> import math
     >>> class Point(editableobject('Point', 'x y')):
@@ -580,6 +599,10 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
     def astuple(self):
         return tuple(getattr(self, name) for name in self.__slots__)
 
+    def update(self, **kwargs):
+        for name, value in kwargs.items():
+            self._update(name, value)
+
     def __setattr__(self, name, value):
         if self._validator is not None:
             value = self._validator(name, value)
@@ -600,8 +623,8 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
     doc = _doc(classname, fieldnames, defaults) if doc is None else doc
     attributes = dict(
         __init__=__init__, asdict=property(asdict),
-        astuple=property(astuple), __repr__=__repr__,
-        __delattr__=__delattr__, __setattr__=__setattr__,
+        astuple=property(astuple), update=update, _update=_update,
+        __repr__=__repr__, __delattr__=__delattr__, __setattr__=__setattr__,
         _defaults=defaults, _validator=staticmethod(validator),
         __eq__=__eq__, __lt__=__lt__, __slots__=fieldnames, __doc__=doc)
     return functools.total_ordering(type(classname, (), attributes))
@@ -635,6 +658,12 @@ def __repr__(self):
         pairs.append((name, getattr(self, name)))
     kwargs = ', '.join(f'{name}={value!r}' for name, value in pairs)
     return f'{self.__class__.__name__}({kwargs})'
+
+
+def _update(self, name, value):
+    if self._validator is not None:
+        value = self._validator(name, value)
+    object.__setattr__(self, name, value)
 
 
 def __delattr__(self, _name):

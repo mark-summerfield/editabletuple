@@ -126,7 +126,8 @@ Instances of the class behave almost exactly like
 using their index position or fieldname. They support `len()`, `in`, the
 comparison operators, and are iterable—which means they can be converted to
 a `list` or `tuple` by passing to either's eponymous factory function. They
-also provide an `.asdict` property.
+also provide an `.asdict` property and an `update()` method that accepts
+_`name=value`_ arguments.
 
 **`def editableobject(classname, *fieldnames, defaults=None, validator=None,
                      doc=None):`**
@@ -137,7 +138,8 @@ Creates a new class called `classname` with the given `fieldnames`, optional
 Instances of the class have fields which can get and set by fieldname. They
 support the comparison operators and `.astuple` and `.asdict` properties,
 the former returning a `tuple` of the instance's values, the latter a `dict`
-of fielname-value  items..
+of fielname-value  items. It also has an `update()` method that accepts
+_`name=value`_ arguments.
 
 ---
 
