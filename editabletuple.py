@@ -21,7 +21,7 @@ and editableobject APIs.
 
 import functools
 
-__version__ = '1.4.4'
+__version__ = '1.4.5'
 
 
 def editabletuple(classname, *fieldnames, defaults=None, validator=None,
@@ -397,7 +397,7 @@ def editableobject(classname, *fieldnames, defaults=None, validator=None,
     >>>
     >>> Format = editableobject(
     ...     'Format', 'indent', 'wrap_width', 'max_short_len',
-    ...     defaults=('  ', 96, 10, 5, 32),
+    ...     defaults=('  ', 96, 32),
     ...     validator=_validate_format)
     >>> fmt = Format() # default
     >>> fmt.indent == '  ' and fmt.wrap_width == 96
