@@ -21,7 +21,7 @@ and editableobject APIs.
 
 import functools
 
-__version__ = '1.5.0'
+__version__ = '1.5.1'
 
 
 def editabletuple(classname, *fieldnames, defaults=None, validator=None,
